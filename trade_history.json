@@ -889,5 +889,16 @@
         "status": "CLOSED",
         "profit": -1593.0,
         "close_time": "2026-02-21T00:19:14"
+    },
+    {
+        "ticket": 229731382,
+        "symbol": "GOLD#",
+        "strategy": "Trend",
+        "direction": "BUY",
+        "entry_time": "2026-02-21T01:27:09.556236",
+        "entry_price": 5051.33,
+        "status": "CLOSED",
+        "profit": 2011.0,
+        "close_time": "2026-02-21T01:30:32.472536"
     }
 ]
