@@ -2,7 +2,10 @@ import streamlit as st
 import pandas as pd
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+# --- タイムゾーン ---
+JST = timezone(timedelta(hours=9))
 
 # --- ページ設定 ---
 st.set_page_config(page_title="AntiCrow Cal", layout="centered")
@@ -25,26 +28,30 @@ st.title("🐦 AntiCrow Analysis")
 # --- データ読み込み (v4.5: GitHubから最新データを取得) ---
 GITHUB_RAW_URL = "https://raw.githubusercontent.com/Nodensxyz/anticrow-web/main/trade_history.json"
 
-@st.cache_data(ttl=30)  # 30秒キャッシュ（リロードで最新取得）
+@st.cache_data(ttl=30)
 def load_data():
     try:
-        # まずGitHubから最新を取得
         resp = requests.get(GITHUB_RAW_URL, timeout=10)
         resp.raise_for_status()
         data = resp.json()
     except Exception:
-        # フォールバック: ローカルファイル
         with open('trade_history.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
     
     df = pd.DataFrame(data)
-    df = df[df['status'] == 'CLOSED']  # 決済済みのみ
+    df = df[df['status'] == 'CLOSED']
     df['close_time'] = pd.to_datetime(df['close_time'], format='mixed')
+    
+    # close_timeにタイムゾーン情報がなければJSTとみなす
+    if df['close_time'].dt.tz is None:
+        df['close_time'] = df['close_time'].dt.tz_localize('Asia/Tokyo')
+    
     return df
 
 try:
     df = load_data()
-    df['date'] = df['close_time'].dt.date
+    # JST基準で日付を取得
+    df['date'] = df['close_time'].dt.tz_convert('Asia/Tokyo').dt.date
     daily_stats = df.groupby('date')['profit'].sum().reset_index()
 
     # --- 統計情報を最上部に配置（スマホで見やすく） ---
@@ -72,7 +79,7 @@ try:
             "allDay": True
         })
 
-    # --- カレンダー設定（スライド禁止・固定表示） ---
+    # --- カレンダー設定 ---
     calendar_options = {
         "headerToolbar": {"left": "prev,next", "center": "title", "right": ""},
         "initialView": "dayGridMonth",
@@ -84,8 +91,9 @@ try:
     
     st_calendar(events=calendar_events, options=calendar_options)
 
-    # --- 最終更新時刻 ---
-    st.caption(f"最終更新: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    # --- 最終更新時刻 (JST) ---
+    now_jst = datetime.now(JST)
+    st.caption(f"最終更新: {now_jst.strftime('%Y-%m-%d %H:%M:%S')} (JST)")
 
 except Exception as e:
     st.error(f"Error: {e}")
