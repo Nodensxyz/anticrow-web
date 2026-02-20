@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 import json
-from streamlit_calendar import calendar
+import requests
 from datetime import datetime
 
 # --- ページ設定 ---
-st.set_page_config(page_title="AntiCrow Cal", layout="centered") # layoutをcenteredに
+st.set_page_config(page_title="AntiCrow Cal", layout="centered")
 
 # --- スマホ用カスタムCSS ---
 st.markdown("""
@@ -22,11 +22,23 @@ st.markdown("""
 
 st.title("🐦 AntiCrow Analysis")
 
-# --- データ読み込み ---
+# --- データ読み込み (v4.5: GitHubから最新データを取得) ---
+GITHUB_RAW_URL = "https://raw.githubusercontent.com/Nodensxyz/anticrow-web/main/trade_history.json"
+
+@st.cache_data(ttl=30)  # 30秒キャッシュ（リロードで最新取得）
 def load_data():
-    with open('trade_history.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
+    try:
+        # まずGitHubから最新を取得
+        resp = requests.get(GITHUB_RAW_URL, timeout=10)
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception:
+        # フォールバック: ローカルファイル
+        with open('trade_history.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    
     df = pd.DataFrame(data)
+    df = df[df['status'] == 'CLOSED']  # 決済済みのみ
     df['close_time'] = pd.to_datetime(df['close_time'], format='mixed')
     return df
 
@@ -46,6 +58,8 @@ try:
     m3.metric("取引数", f"{total_trades}")
 
     # --- カレンダー用イベント作成 ---
+    from streamlit_calendar import calendar as st_calendar
+
     calendar_events = []
     for _, row in daily_stats.iterrows():
         p = row['profit']
@@ -60,15 +74,18 @@ try:
 
     # --- カレンダー設定（スライド禁止・固定表示） ---
     calendar_options = {
-        "headerToolbar": {"left": "prev,next", "center": "title", "right": ""}, # 表示切替を消去
+        "headerToolbar": {"left": "prev,next", "center": "title", "right": ""},
         "initialView": "dayGridMonth",
-        "fixedWeekCount": False, # 月によって週数を変えてコンパクトに
-        "height": "auto",        # 内容に合わせて高さを自動調整
+        "fixedWeekCount": False,
+        "height": "auto",
         "handleWindowResize": True,
-        "longPressDelay": 1000,  # 誤操作防止
+        "longPressDelay": 1000,
     }
     
-    calendar(events=calendar_events, options=calendar_options)
+    st_calendar(events=calendar_events, options=calendar_options)
+
+    # --- 最終更新時刻 ---
+    st.caption(f"最終更新: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 except Exception as e:
     st.error(f"Error: {e}")

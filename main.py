@@ -5,6 +5,7 @@ import requests
 import json
 import os
 import sys
+import subprocess
 from datetime import datetime, timedelta
 import logging
 
@@ -129,6 +130,7 @@ class AntigravityBot:
 
         if updated:
             self._save_file()
+            self.sync_to_github()
 
     def _save_file(self):
         """履歴ファイルを保存"""
@@ -137,6 +139,21 @@ class AntigravityBot:
                 json.dump(self.trades, f, indent=4, ensure_ascii=False)
         except Exception as e:
             logging.error(f"履歴保存エラー: {e}")
+
+    def sync_to_github(self):
+        """トレード履歴をGitHubへ自動プッシュする (v4.5)"""
+        try:
+            subprocess.run(["git", "add", "trade_history.json"], cwd=BASE_DIR, check=True, timeout=10, capture_output=True)
+            subprocess.run(["git", "commit", "-m", f"Auto-update: Trade {datetime.now().strftime('%Y-%m-%d %H:%M')}"], cwd=BASE_DIR, check=True, timeout=10, capture_output=True)
+            subprocess.run(["git", "push"], cwd=BASE_DIR, check=True, timeout=30, capture_output=True)
+            logging.info("GitHub同期完了 ✅")
+        except subprocess.TimeoutExpired:
+            logging.warning("GitHub同期: タイムアウト (ネットワーク遅延の可能性)")
+        except subprocess.CalledProcessError as e:
+            # commit失敗は変更なしの可能性があるため警告レベル
+            logging.warning(f"GitHub同期スキップ: {e}")
+        except Exception as e:
+            logging.error(f"GitHub同期エラー: {e}")
 
     def notify_close(self, trade):
         """決済通知を送る (v2.2: 本日収益追加)"""

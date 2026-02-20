@@ -754,8 +754,19 @@
         "direction": "SELL",
         "entry_time": "2026-02-20T17:13:31.385627",
         "entry_price": 5009.91,
-        "status": "OPEN",
-        "profit": 0.0,
-        "close_time": null
+        "status": "CLOSED",
+        "profit": -1575.0,
+        "close_time": "2026-02-20T19:22:13"
+    },
+    {
+        "ticket": 229693935,
+        "symbol": "GOLD#",
+        "strategy": "Trend",
+        "direction": "SELL",
+        "entry_time": "2026-02-20T17:22:03.644668",
+        "entry_price": 5013.77,
+        "status": "CLOSED",
+        "profit": -1622.0,
+        "close_time": "2026-02-20T19:26:00"
     }
 ]
