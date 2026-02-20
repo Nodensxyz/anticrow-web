@@ -1,0 +1,37 @@
+{
+    "SYMBOLS": {
+        "GOLD#": {
+            "LOT": 0.03,
+            "SL_POINTS": 350,
+            "TP_POINTS": 600,
+            "MAX_POSITIONS": 3,
+            "MIN_DISTANCE": 200,
+            "ATR_THRESHOLD": 3.0,
+            "TREND_FILTER": true,
+            "COOLDOWN_MINUTES": 45,
+            "RSI_TREND_BUY": 35,
+            "RSI_TREND_SELL": 65,
+            "RSI_RANGE_BUY": 28,
+            "RSI_RANGE_SELL": 72,
+            "NANPIN_RSI_OFFSET": 5
+        },
+        "BTCUSD#": {
+            "LOT": 0.02,
+            "SL_POINTS": 30000,
+            "TP_POINTS": 40000,
+            "MAX_POSITIONS": 3,
+            "MIN_DISTANCE": 10000,
+            "ATR_THRESHOLD": 500.0,
+            "TREND_FILTER": true,
+            "COOLDOWN_MINUTES": 45,
+            "RSI_TREND_BUY": 35,
+            "RSI_TREND_SELL": 65,
+            "RSI_RANGE_BUY": 28,
+            "RSI_RANGE_SELL": 72,
+            "NANPIN_RSI_OFFSET": 5
+        }
+    },
+    "MAGIC_NUMBER": 123456,
+    "WAIT_SECONDS": 300,
+    "WEBHOOK_URL": "https://discord.com/api/webhooks/1471378708471353558/76CCmWhUcZDw48JefUWvnMwgDwXJyCkifAUb6n4GfMJv5XB0o2YHZb6RbCuCdRt9STtr"
+}

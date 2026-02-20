@@ -1,0 +1,31 @@
+{
+    "SYMBOLS": {
+        "GOLD#": {
+            "LOT": 0.02,
+            "SL_POINTS": 500,
+            "TP_POINTS": 650,
+            "MAX_POSITIONS": 3,
+            "MIN_DISTANCE": 200,
+            "ATR_THRESHOLD": 5.0,
+            "TREND_FILTER": true,
+            "COOLDOWN_MINUTES": 45,
+            "RSI_TREND_BUY": 43,
+            "RSI_TREND_SELL": 57,
+            "RSI_RANGE_BUY": 43,
+            "RSI_RANGE_SELL": 57,
+            "NANPIN_RSI_OFFSET": 5,
+            "EMERGENCY_RSI_BUY": 30,
+            "EMERGENCY_RSI_SELL": 70,
+            "RANGE_ATR_MAX": 2.0,
+            "NANPIN_INTERVAL_SEC": 300
+        }
+    },
+    "MAGIC_NUMBER": 123456,
+    "WAIT_SECONDS": 60,
+    "BE_TRIGGER_RATIO": 0.013,
+    "BE_OFFSET_RATIO": 0.001,
+    "BASKET_TP_RATIO": 0.025,
+    "TRAIL_TRIGGER_RATIO": 0.018,
+    "TRAIL_STOP_RATIO": 0.005,
+    "WEBHOOK_URL": "https://discord.com/api/webhooks/1471378708471353558/76CCmWhUcZDw48JefUWvnMwgDwXJyCkifAUb6n4GfMJv5XB0o2YHZb6RbCuCdRt9STtr"
+}
