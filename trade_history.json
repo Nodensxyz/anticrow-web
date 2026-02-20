@@ -919,8 +919,8 @@
         "direction": "BUY",
         "entry_time": "2026-02-21T06:44:42.014668",
         "entry_price": 5099.6,
-        "status": "OPEN",
-        "profit": 0.0,
-        "close_time": null
+        "status": "CLOSED",
+        "profit": 2068.0,
+        "close_time": "2026-02-21T06:53:19.488934"
     }
 ]
