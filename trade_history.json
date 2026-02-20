@@ -768,5 +768,27 @@
         "status": "CLOSED",
         "profit": -1622.0,
         "close_time": "2026-02-20T19:26:00"
+    },
+    {
+        "ticket": 229698564,
+        "symbol": "GOLD#",
+        "strategy": "Trend",
+        "direction": "BUY",
+        "entry_time": "2026-02-20T18:30:22.312556",
+        "entry_price": 5033.63,
+        "status": "CLOSED",
+        "profit": -1526.0,
+        "close_time": "2026-02-20T20:58:00"
+    },
+    {
+        "ticket": 229698737,
+        "symbol": "GOLD#",
+        "strategy": "Trend",
+        "direction": "BUY",
+        "entry_time": "2026-02-20T18:33:13.895339",
+        "entry_price": 5031.12,
+        "status": "OPEN",
+        "profit": 0.0,
+        "close_time": null
     }
 ]
